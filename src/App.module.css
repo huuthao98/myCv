@@ -1,0 +1,183 @@
+#main {
+    display: flex;
+    box-sizing: border-box;
+
+    background: #3d4152 ;
+
+    min-height: 100vh;
+    height: 600vh;
+}
+
+/* CONTROL PAGE  */
+
+.controlPage {
+    position: fixed;
+
+    inset: 20px 0 20px 20px;
+    width: 76px;
+    
+    background: #fff;
+    transition: 0.5s;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.controlPage.openMenu {
+    
+    width: 230px;
+}
+.controlPage + .showPage{
+    transition: 0.5s;
+}
+
+.controlPage.openMenu + .showPage{
+    transition: 0.5s;
+    margin-left: 100px;
+}
+
+.controlPage .menuControl {
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    width: 100%;
+    height: 60px;
+
+    border-bottom: 1px solid rgba(0, 0 , 0, 0.5);
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    
+    
+}
+
+.controlPage .menuControl::before {
+    content: '';
+    position: absolute;
+    background: #333;
+    
+    width: 30px;
+    height: 2px;
+    margin-left: 22px;
+    
+    transform: translateY(-8px);
+    transition: 0.5s;
+}
+.controlPage.openMenu .menuControl::before {
+    transform: translateY(0px) rotate(45deg);
+}
+
+.controlPage .menuControl::after {
+    content: '';
+    position: absolute;
+    
+    background: #333;
+    width: 30px;
+    height: 2px;
+    margin-left: 22px;
+    
+    transform: translateY(8px);
+    transition: 0.5s;
+    box-shadow: 0 -8px 0 #333;
+
+}
+.controlPage.openMenu .menuControl::after {
+    transform: translateY(0px) rotate(-45deg);
+    box-shadow: 0 0 0 #333;
+}
+
+/* CONTROL ul li  */
+.controlPage .routes{
+    display: flex ;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+.controlPage .routes .route {
+    list-style: none;
+    position: relative;
+   
+    width: 100%;
+    height: 60px;
+    padding: 0 10px;
+    
+    transition: 0.5s;
+}
+
+.controlPage .routes .route.active {
+    
+    transform: translateX(16px);
+}
+.controlPage .routes .route.active .icon {
+    /* color: #333; */
+}
+
+.controlPage .routes .route .linkRoute{
+    position: relative;
+    
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    
+    text-align: center;
+    text-decoration: none;
+}
+
+.controlPage .routes .route .linkRoute .icon{
+    position: relative;
+    display: block;
+    
+    min-width: 40px;
+    height: 40px;
+    line-height: 50px;
+    font-size: 1.6rem;
+
+    border-radius: 10px;
+    padding: 8px;     
+
+    transition: 0.5s;
+
+}
+
+
+
+.controlPage .routes .route .linkRoute .text{
+    position: relative;
+    
+    padding: 0 15px;
+    font-size: 1.6rem;
+
+    display: flex;
+    justify-content: center;
+    color: #333;
+    
+    opacity: 0;
+    visibility: hidden;
+
+    
+}
+
+.controlPage.openMenu .routes .route .linkRoute  .text {
+    opacity: 1;
+    visibility: visible;
+}
+ /* PAGE SHOW  */
+
+.showPage {
+    width: 100%;
+}
+
+#routes {
+   
+}
+
+.route {
+    
+   
+}
+
+
