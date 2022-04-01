@@ -36,8 +36,8 @@ function App() {
     {name:'Education', id: 3,icon: FaBook,color:'#b145e9'},
     {name:'Career', id:4,icon: FaBullseye,color:'#2196f3'},
     {name:'Interests', id:5,icon: FaHeart,color:'#f44336'}
-]
-  
+  ]
+
   //hook
   const [openMenu, setOpenMenu] = useState(false);
   const [activeColor, setActiveColor] = useState(1)                      
@@ -51,12 +51,11 @@ function App() {
   
   
   const actionsOpenLink = (id) => { 
-    //function current check
+    
     return function() {
       
       for(let i = 0;i < listMenu.length; i++){
         if(activeColor === listMenu[i].id) {
-          
           setActiveColor(id)
           }
        }

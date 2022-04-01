@@ -5,86 +5,119 @@ import clsx from 'clsx'
 //icon 
 import { FaTrash} from "react-icons/fa"
 import { FaPlus} from "react-icons/fa"
+import { FaCheck} from "react-icons/fa"
+import { FaSearch} from "react-icons/fa"
 
+//react redux
+import { useDispatch, useSelector } from 'react-redux';
+import { addTodo } from '../../../redux/actions';
+import { searchTodo } from '../../../redux/actions';
+
+//import id 
+import {v4 as uuidv4} from 'uuid';
 //hook
 import { useState} from 'react'  
+import { todoListSelector, searchTextSelector } from '../../../redux/selecters';
+
 
 function Todo() {
+    const priorityColorMapping = {
+      High: 'red',
+      Medium: 'blue',
+      Low: 'gray',
+    };
+    const dispatch =useDispatch();
   
+    const [todoName, setTodoName] = useState('') 
+    const [priority, setPriority] = useState('Medium') 
+    const [search, setSearch] = useState('') 
 
-    const [job, setJob] = useState({name:'',id:''}) 
-    
-    const getLocalStorage = JSON.parse(localStorage.getItem('Name') )
-    
-    const [jobs, setJobs] = useState(getLocalStorage)
-
-    localStorage.setItem('Name', JSON.stringify(jobs));
+    const todoList = useSelector(todoListSelector)
+    const searchText = useSelector(searchTextSelector)
    
     const handleSubmit = () => {
-      if(job.name.trim() !== '') {
-        setJobs(prev => [...prev, job]) 
-        setJob({name:''})
-
-      }
-
-    }
   
-    const onChangeJob = (e) => {
-      setJob({name:e.target.value,id: indexId()})
+      //use redux
+      dispatch(
+        addTodo({
+          id:uuidv4(),
+          name:todoName,
+          priority: priority,
+          completed:  false
+        })
+      )
+    }
+    const handleInputChange = (e) => {
+      setTodoName(e.target.value);
+      setTodoName('')
     }
 
-    const handleDel =(id) => {
- 
-      return function() {
-        for(let i = 0; i < jobs.length; i++) {
-          if(id === jobs[i].id) {
-         
-            jobs.splice(i, 1)
-            setJobs(prev => [...prev]) 
+    const handlePriorityChange = (e) => {
+      setPriority(e.target.value)
 
-           }
-        }
-        
-      } 
+    }
+    const handleSearch = (e) => {
+      setSearch(e.target.value)
+      dispatch(searchTodo(e.target.value))
     }
    
     
-    const indexId =() => {
-      const alphabet = 'abcdefghijklmnouptqxyz1234567890';
-      return alphabet[Math.floor(Math.random()*alphabet.length)] + alphabet[Math.floor(Math.random()*alphabet.length)] 
-      + alphabet[Math.floor(Math.random()*alphabet.length)] + alphabet[Math.floor(Math.random()*alphabet.length)]
-    }
-
-    // useEffect(() => {
-    //   const getLocalStorage = localStorage.getItem('Name') 
-    // }, [jobs])
-    
+  
 
     return (
       
       <div  className={clsx(stylesTodo.todoApp)}>
           
           <div className={clsx(stylesTodo.todoFrom)}>
-            
-            <input
-              placeholder='Enter Text'
+            <div>
+              <div style={{display: 'flex', margin: '20px'}}>
+                <input
+                placeholder='Enter Text'
+                
+                value={todoName}
+                onChange={handleInputChange}
+                />
+                <span>
+                  <select value={priority} onChange={handlePriorityChange} style={{border: '0',height:'50px'}}>
+                    <option  className={clsx(stylesTodo.todoOption)} value='High' label='High' ></option>
+                    <option  className={clsx(stylesTodo.todoOption)} value='Medium' label='Medium'></option>
+                    <option  className={clsx(stylesTodo.todoOption)} value='Low' label='Low'></option>
+                  </select>
+                </span>
+                <button  onClick={handleSubmit} className={clsx(stylesTodo.btn)} ><FaPlus /></button>
+              </div>
               
-              value={job.name}
-              onChange={onChangeJob}
-            />
-            <button  onClick={handleSubmit} className={clsx(stylesTodo.btn)} ><FaPlus /></button>
-  
-            <ul >
-              {jobs.map((job) =>(
-                <div key={job.id} className={stylesTodo.job}>
-                  <li >{job.name}</li>
-                  <FaTrash className={clsx(stylesTodo.icon)} onClick={handleDel(job.id)}/>
-                </div>
-              ))}
-            </ul>
-  
-          </div>
+              <ul >
+                {todoList.map((todo)=> (
+                  <div className={stylesTodo.job} key={todo.id}>
+                    <ul >
+                      <li>{todo.name}</li>
+                      <li style={{marginLeft: '20px',color:`${priorityColorMapping[todo.priority]}`}}>{todo.priority}</li>
+                    </ul>
+                    <div>
+                      <FaCheck className={clsx(stylesTodo.icon, stylesTodo.iconCheck)}  />
+                      <FaTrash className={clsx(stylesTodo.icon)}/>
+                    </div>
+
+                  </div>
+                ))}
+              </ul>
+            </div>
+            <div className={clsx(stylesTodo.todoMenu)}>
+              <div  style={{display: 'flex', margin: '20px'}}>
+                <input 
+                  placeholder='Search Text'
+                  value={search}
+                  onChange={handleSearch}
+                />
+                <button className={clsx(stylesTodo.btn)}>
+                  <FaSearch className={clsx(stylesTodo.icon, stylesTodo.iconCheck)}/>
+                </button>
+              </div>
+              
+            </div>
         
+          </div>
       </div>
     );
 }
